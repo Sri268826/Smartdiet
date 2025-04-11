@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Add this in your HTML head section -->
+    <meta http-equiv="Content-Language" content="en" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InstaScan - Smart Product Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/index.css" />
+  </head>
+  <body class="antialiased">
+    <!-- Navbar -->
+    <nav class="fixed w-full bg-white shadow-sm z-50">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <div class="text-2xl font-bold text-blue-600">InstaScan</div>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2481/2481929.png"
+              alt="Logo"
+              class="w-8 h-8"
+            />
+          </div>
+
+          <!-- Mobile Navigation -->
+          <div class="md:hidden ml-auto mr-4">
+            <div id="google_translate_element" class="mobile-translate"></div>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex space-x-8 items-center">
+            <a href="#home" class="text-gray-600 hover:text-blue-600 transition"
+              >Home</a
+            >
+            <a
+              href="#features"
+              class="text-gray-600 hover:text-blue-600 transition"
+              >Features</a
+            >
+            <a
+              href="#about"
+              class="text-gray-600 hover:text-blue-600 transition"
+              >About Us</a
+            >
+            <a
+              href="#contact"
+              class="text-gray-600 hover:text-blue-600 transition"
+              >Contact</a
+            >
+
+            <!-- Visible Google Translate element for desktop -->
+            <div id="google_translate_element" class="desktop-translate"></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg pt-32 pb-20">
+      <div
+        class="container mx-auto px-6 flex flex-col md:flex-row items-center"
+      >
+        <div class="md:w-1/2">
+          <h1 class="text-5xl font-bold text-gray-800 mb-6 leading-tight">
+            Scan Smart,<br />
+            <span
+              class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
+            >
+              Live Healthy
+            </span>
+          </h1>
+          <p class="text-gray-600 text-lg mb-8">
+            Instantly scan medicine, food products, and cosmetics to reveal
+            their ingredients, allergens, and nutritional information.
+          </p>
+          <form id="uploadForm" class="space-y-4">
+            <div class="space-y-4">
+              <!-- Upload Button with hidden file input -->
+              <div class="space-y-4">
+                <button
+                  type="button"
+                  onclick="document.getElementById('imageInput').click()"
+                  class="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition w-full"
+                >
+                  Upload
+                </button>
+                <input
+                  type="file"
+                  id="imageInput"
+                  name="imageInput"
+                  accept="image/*"
+                  class="hidden"
+                />
+
+                <div class="relative">
+                  <div
+                    class="absolute inset-0 flex items-center"
+                    aria-hidden="true"
+                  >
+                    <div class="w-full border-t border-gray-300"></div>
+                  </div>
+                  <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">OR</span>
+                  </div>
+                </div>
+
+                <input
+                  type="url"
+                  id="imageUrl"
+                  name="imageUrl"
+                  placeholder="Enter image URL"
+                  class="hidden md:block w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <button
+                type="button"
+                onclick="openCamera()"
+                class="bg-green-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-green-700 transition w-full"
+              >
+                📷 Open Camera
+              </button>
+
+              <button
+                type="submit"
+                class="bg-gray-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-300 w-full"
+              >
+                Scan Now
+              </button>
+              <!-- Add loader here -->
+              <div id="loader" class="hidden">
+                <div
+                  class="flex-col gap-4 w-full flex items-center justify-center"
+                >
+                  <div
+                    class="w-28 h-28 border-8 text-blue-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-blue-400 rounded-full"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      height="1em"
+                      width="1em"
+                      class="animate-ping"
+                    ></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Category Selection Buttons -->
+              <div class="flex flex-col gap-3 mt-4">
+                <p class="text-gray-600 text-sm text-center">
+                  Select product type:
+                </p>
+                <div class="flex gap-3">
+                  <button
+                    type="button"
+                    onclick="selectCategory('food')"
+                    class="category-btn flex-1 border-2 border-blue-600 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-all duration-300"
+                  >
+                    Food Product
+                  </button>
+                  <button
+                    type="button"
+                    onclick="selectCategory('medicine')"
+                    class="category-btn flex-1 border-2 border-blue-600 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-all duration-300"
+                  >
+                    Medicine
+                  </button>
+                  <button
+                    type="button"
+                    onclick="selectCategory('cosmetics')"
+                    class="category-btn flex-1 border-2 border-blue-600 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-all duration-300"
+                  >
+                    Cosmetics
+                  </button>
+                </div>
+                <input
+                  type="hidden"
+                  id="selectedCategory"
+                  name="category"
+                  value=""
+                />
+              </div>
+            </div>
+          </form>
+          <div id="result" class="mt-6 text-gray-700"></div>
+        </div>
+        <div class="md:w-1/2 mt-12 md:mt-0">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3481/3481076.png"
+            alt="Scanner"
+            class="w-3/4 mx-auto bounce"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Camera Modal -->
+    <div id="cameraModal" class="fixed inset-0 z-50 hidden camera-modal">
+      <div class="relative h-full w-full flex items-center justify-center">
+        <video
+          id="cameraPreview"
+          class="h-[80vh] w-auto rounded-lg"
+          autoplay
+          playsinline
+        ></video>
+        <div class="camera-actions flex gap-4">
+          <button
+            onclick="capturePhoto()"
+            class="bg-white p-4 rounded-full shadow-lg hover:bg-gray-100 transition"
+          >
+            ⚪ Capture
+          </button>
+          <button
+            onclick="closeCamera()"
+            class="bg-red-600 text-white p-4 rounded-full shadow-lg hover:bg-red-700 transition"
+          >
+            ❌ Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-8 text-gray-800">
+          Instant Product Insights
+        </h2>
+        <p class="text-xl text-center mb-16 text-gray-600">
+          Scan any product to get comprehensive information tailored to your
+          needs
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Food Card -->
+          <div class="card p-6 hover:shadow-lg transition-shadow">
+            <h3 class="text-2xl font-semibold text-center mb-4 text-blue-600">
+              Packed Food Products
+            </h3>
+            <p class="text-gray-600 text-center">
+              Scan food products to get nutritional details, allergen alerts,
+              safety information, and personalized dietary recommendations. Make
+              informed choices about what you eat.
+            </p>
+          </div>
+
+          <!-- Medicine Card -->
+          <div class="card p-6 hover:shadow-lg transition-shadow">
+            <h3 class="text-2xl font-semibold text-center mb-4 text-blue-600">
+              Medicine
+            </h3>
+            <p class="text-gray-600 text-center">
+              Scan medications to view ingredients, dosage instructions, side
+              effects, drug interactions, and expiration alerts. Stay safe with
+              proper usage guidance.
+            </p>
+          </div>
+
+          <!-- Cosmetics Card -->
+          <div class="card p-6 hover:shadow-lg transition-shadow">
+            <h3 class="text-2xl font-semibold text-center mb-4 text-blue-600">
+              Cosmetics
+            </h3>
+            <p class="text-gray-600 text-center">
+              Scan cosmetics for ingredient analysis, allergen detection, skin
+              compatibility assessment, and personalized product recommendations
+              based on your skin type.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="flex items-center space-x-2">
+            <div class="text-2xl font-bold">InstaScan</div>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2481/2481929.png"
+              alt="Logo"
+              class="w-8 h-8"
+            />
+          </div>
+          <div class="flex space-x-8">
+            <a href="#home" class="hover:text-blue-400 transition">Home</a>
+            <a href="#features" class="hover:text-blue-400 transition"
+              >Features</a
+            >
+            <a href="#about" class="hover:text-blue-400 transition">About Us</a>
+            <a href="#contact" class="hover:text-blue-400 transition"
+              >Contact</a
+            >
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-700 mt-8 pt-8 text-center md:text-right"
+        >
+          <p class="text-gray-400">
+            &copy; 2025 InstaScan. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <!-- Scripts -->
+    <script src="./scripts/index.js"></script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+    <script src="./scripts/language.js"></script>
+  </body>
+</html>
